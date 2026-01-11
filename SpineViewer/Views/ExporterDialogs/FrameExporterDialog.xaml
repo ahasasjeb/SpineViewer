@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:SpineViewer.Views"
         xmlns:utils="clr-namespace:SpineViewer.Utils"
         xmlns:vmexp="clr-namespace:SpineViewer.ViewModels.Exporters"
+        xmlns:vm="clr-namespace:SpineViewer.ViewModels.MainWindow"
         d:DataContext="{d:DesignInstance Type=vmexp:FrameExporterViewModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_FrameExporterTitle}" 
@@ -120,6 +121,35 @@
                                     </Border>
                                     <TextBox Text="{Binding BackgroundColor}" ToolTip="#AARRGGBB"/>
                                 </DockPanel>
+                            </Grid>
+
+                            <!-- 背景图片路径 -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_BackgroundImagePath}"/>
+                                <DockPanel Grid.Column="1">
+                                    <Button DockPanel.Dock="Right" Content="..." Command="{Binding Cmd_SelectBackgroundImage}"/>
+                                    <TextBox Text="{Binding BackgroundImagePath}"/>
+                                </DockPanel>
+                            </Grid>
+
+                            <!-- 背景图片模式 -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_BackgroundImageMode}"/>
+                                <ComboBox Grid.Column="1" SelectedValue="{Binding BackgroundImageMode}" ItemsSource="{x:Static vm:SFMLRendererViewModel.StretchOptions}">
+                                    <ComboBox.Resources>
+                                        <Style TargetType="ComboBox" BasedOn="{StaticResource ComboBoxBaseStyle}">
+                                            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                                        </Style>
+                                    </ComboBox.Resources>
+                                </ComboBox>
                             </Grid>
 
                             <!-- 四周边距 -->

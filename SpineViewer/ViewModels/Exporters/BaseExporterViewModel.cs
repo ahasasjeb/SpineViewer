@@ -58,6 +58,18 @@ namespace SpineViewer.ViewModels.Exporters
         protected Color _backgroundColor = Color.FromArgb(255, 0, 0, 0);
 
         /// <summary>
+        /// 背景图片路径
+        /// </summary>
+        public string? BackgroundImagePath { get => _backgroundImagePath; set => SetProperty(ref _backgroundImagePath, value); }
+        protected string? _backgroundImagePath;
+
+        /// <summary>
+        /// 背景图片拉伸模式
+        /// </summary>
+        public Stretch BackgroundImageMode { get => _backgroundImageMode; set => SetProperty(ref _backgroundImageMode, value); }
+        protected Stretch _backgroundImageMode = Stretch.Uniform;
+
+        /// <summary>
         /// 四周边缘距离
         /// </summary>
         public uint Margin { get => _margin; set => SetProperty(ref _margin, value); }
@@ -84,6 +96,16 @@ namespace SpineViewer.ViewModels.Exporters
             }
         });
         protected RelayCommand _cmd_SelectOutputDir;
+
+        public RelayCommand Cmd_SelectBackgroundImage => _cmd_SelectBackgroundImage ??= new(() =>
+        {
+            if (DialogService.ShowOpenSFMLImageDialog(out var fileName))
+            {
+                _backgroundImagePath = fileName;
+                OnPropertyChanged(nameof(BackgroundImagePath));
+            }
+        });
+        protected RelayCommand? _cmd_SelectBackgroundImage;
 
         /// <summary>
         /// 使用提供的包围盒设置自动分辨率

@@ -3,6 +3,7 @@ using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -93,6 +94,72 @@ namespace Spine.Exporters
         protected Color _backgroundColorPma = Color.Black;
 
         /// <summary>
+        /// 背景图片路径
+        /// </summary>
+        public string? BackgroundImagePath
+        {
+            get => _backgroundImagePath;
+            set
+            {
+                if (_backgroundImagePath == value) return;
+                
+                // 清理旧的背景图片资源
+                _backgroundImageSprite?.Dispose();
+                _backgroundImageTexture?.Dispose();
+                _backgroundImageTexture = null;
+                _backgroundImageSprite = null;
+                
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    _backgroundImagePath = value;
+                }
+                else
+                {
+                    if (!File.Exists(value))
+                    {
+                        _logger.Warn("Omit non-existed background image path, {0}", value);
+                        return;
+                    }
+                    
+                    try
+                    {
+                        var tex = new Texture(value);
+                        var sprite = new Sprite(tex) { Origin = new(tex.Size.X / 2f, tex.Size.Y / 2f) };
+                        _backgroundImageTexture = tex;
+                        _backgroundImageSprite = sprite;
+                        _backgroundImagePath = value;
+                        _logger.Info("Load background image from {0}", value);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Error("Failed to load background image from path: {0}, {1}", value, ex.Message);
+                    }
+                }
+            }
+        }
+        protected string? _backgroundImagePath;
+
+        /// <summary>
+        /// 背景图片纹理
+        /// </summary>
+        protected Texture? _backgroundImageTexture;
+
+        /// <summary>
+        /// 背景图片精灵
+        /// </summary>
+        protected Sprite? _backgroundImageSprite;
+
+        /// <summary>
+        /// 背景图片拉伸模式 (0=None, 1=Fill, 2=Uniform, 3=UniformToFill)
+        /// </summary>
+        public int BackgroundImageMode
+        {
+            get => _backgroundImageMode;
+            set => _backgroundImageMode = value;
+        }
+        protected int _backgroundImageMode = 2; // Uniform
+
+        /// <summary>
         /// 画面分辨率
         /// <inheritdoc cref="RenderTexture.Size"/>
         /// </summary>
@@ -164,6 +231,39 @@ namespace Spine.Exporters
         {
             _renderTexture.SetActive(true);
             _renderTexture.Clear(_backgroundColorPma);
+            
+            // 渲染背景图片
+            if (_backgroundImageSprite is not null)
+            {
+                using var view = _renderTexture.GetView();
+                var bg = _backgroundImageSprite;
+                var viewSize = view.Size;
+                var bgSize = bg.Texture.Size;
+                var scaleX = Math.Abs(viewSize.X / bgSize.X);
+                var scaleY = Math.Abs(viewSize.Y / bgSize.Y);
+                var signX = Math.Sign(viewSize.X);
+                var signY = Math.Sign(viewSize.Y);
+                
+                // 0=None, 1=Fill, 2=Uniform, 3=UniformToFill
+                if (_backgroundImageMode == 0)
+                {
+                    scaleX = scaleY = 1f;
+                }
+                else if (_backgroundImageMode == 2)
+                {
+                    scaleX = scaleY = Math.Min(scaleX, scaleY);
+                }
+                else if (_backgroundImageMode == 3)
+                {
+                    scaleX = scaleY = Math.Max(scaleX, scaleY);
+                }
+                
+                bg.Scale = new(signX * scaleX, signY * scaleY);
+                bg.Position = view.Center;
+                bg.Rotation = view.Rotation;
+                _renderTexture.Draw(bg);
+            }
+            
             foreach (var sp in spines.Reverse()) _renderTexture.Draw(sp);
             _renderTexture.Display();
             _renderTexture.SetActive(false);
@@ -187,6 +287,8 @@ namespace Spine.Exporters
             if (disposing)
             {
                 _renderTexture.Dispose();
+                _backgroundImageSprite?.Dispose();
+                _backgroundImageTexture?.Dispose();
             }
             _disposed = true;
         }

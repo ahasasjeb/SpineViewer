@@ -58,6 +58,8 @@ namespace SpineViewer.ViewModels.Exporters
             using var exporter = new FrameExporter(_renderer.Resolution.X + _margin * 2, _renderer.Resolution.Y + _margin * 2)
             {
                 BackgroundColor = new(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A),
+                BackgroundImagePath = _backgroundImagePath,
+                BackgroundImageMode = (int)_backgroundImageMode,
                 Format = _format,
                 Quality = _quality
             };

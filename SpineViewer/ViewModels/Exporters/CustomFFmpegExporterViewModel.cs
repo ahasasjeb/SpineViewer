@@ -63,6 +63,8 @@ namespace SpineViewer.ViewModels.Exporters
             using var exporter = new CustomFFmpegExporter(_renderer.Resolution.X + _margin * 2, _renderer.Resolution.Y + _margin * 2)
             {
                 BackgroundColor = new(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A),
+                BackgroundImagePath = _backgroundImagePath,
+                BackgroundImageMode = (int)_backgroundImageMode,
                 Fps = _fps,
                 Speed = _speed,
                 KeepLast = _keepLast,
