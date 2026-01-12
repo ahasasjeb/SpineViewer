@@ -39,6 +39,7 @@
     <s:String x:Key="Str_Name">名前</s:String>
     <s:String x:Key="Str_Show">表示</s:String>
     <s:String x:Key="Str_ListViewStatusBar">全{0}件、選択中{1}件</s:String>
+    <s:String x:Key="Str_QuickActions">クイック操作</s:String>
     <s:String x:Key="Str_AddSpineObject">追加...</s:String>
     <s:String x:Key="Str_OpenSkelFileTitle">スケルトンファイルを選択（skel）</s:String>
     <s:String x:Key="Str_OpenAtlasFileTitle">アトラスファイルを選択（atlas）</s:String>
@@ -116,6 +117,7 @@
 
     <!-- 渲染画面参数面板 -->
     <s:String x:Key="Str_RenderStopped">レンダリング停止中</s:String>
+    <s:String x:Key="Str_PlaybackControls">再生コントロール</s:String>
     <s:String x:Key="Str_ResolutionX">幅（ピクセル）</s:String>
     <s:String x:Key="Str_ResolutionY">高さ（ピクセル）</s:String>
     <s:String x:Key="Str_CenterX">中心X座標</s:String>
@@ -264,4 +266,3 @@
     <s:String x:Key="Str_AssociateFileSuffix">ファイル拡張子を関連付ける</s:String>
 
 </ResourceDictionary>
-

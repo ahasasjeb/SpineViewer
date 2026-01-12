@@ -39,6 +39,7 @@
     <s:String x:Key="Str_Name">名称</s:String>
     <s:String x:Key="Str_Show">显示</s:String>
     <s:String x:Key="Str_ListViewStatusBar">共 {0} 项，已选择 {1} 项</s:String>
+    <s:String x:Key="Str_QuickActions">快速操作</s:String>
     <s:String x:Key="Str_AddSpineObject">添加...</s:String>
     <s:String x:Key="Str_OpenSkelFileTitle">选择骨骼文件（skel）</s:String>
     <s:String x:Key="Str_OpenAtlasFileTitle">选择图集文件（atlas）</s:String>
@@ -116,6 +117,7 @@
 
     <!-- 渲染画面参数面板 -->
     <s:String x:Key="Str_RenderStopped">渲染已停止</s:String>
+    <s:String x:Key="Str_PlaybackControls">播放控制</s:String>
     <s:String x:Key="Str_ResolutionX">宽（像素）</s:String>
     <s:String x:Key="Str_ResolutionY">高（像素）</s:String>
     <s:String x:Key="Str_CenterX">中心点横坐标</s:String>

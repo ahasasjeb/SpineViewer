@@ -90,13 +90,16 @@
                         <TabControl x:Name="_mainTabControl" TabStripPlacement="Left">
 
                             <!-- 模型列表页 -->
-                            <TabItem>
+                                <TabItem>
                                 <TabItem.Header>
                                     <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
                                             MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
-                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_SpineObject}">
-                                            <Path Data="{StaticResource Geo_Cubes}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
-                                        </Viewbox>
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                            <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_SpineObject}">
+                                                <Path Data="{StaticResource Geo_Cubes}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                            </Viewbox>
+                                            <TextBlock Text="{DynamicResource Str_SpineObject}" Margin="0 6 0 0" HorizontalAlignment="Center"/>
+                                        </StackPanel>
                                     </Border>
                                 </TabItem.Header>
                                 <Grid x:Name="_modelListGrid">
@@ -108,6 +111,42 @@
 
                                     <!-- 模型列表 -->
                                     <DockPanel DataContext="{Binding SpineObjectListViewModel}">
+                                        <StackPanel DockPanel.Dock="Top" Margin="6 6 6 0">
+                                            <TextBlock Text="{DynamicResource Str_QuickActions}"
+                                                       Margin="0 0 0 4"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                            <WrapPanel>
+                                                <Button Style="{StaticResource ButtonDefault}"
+                                                        Margin="0 0 6 6"
+                                                        Content="{DynamicResource Str_AddSpineObject}"
+                                                        Command="{Binding Cmd_AddSpineObject}"/>
+                                                <Button Style="{StaticResource ButtonDefault}"
+                                                        Margin="0 0 6 6"
+                                                        Content="{DynamicResource Str_AddSpineObjectFromClipboard}"
+                                                        Command="{Binding Cmd_AddSpineObjectFromClipboard}"/>
+                                                <Button Style="{StaticResource ButtonDefault}"
+                                                        Margin="0 0 6 6"
+                                                        Content="{DynamicResource Str_Reload}"
+                                                        Command="{Binding Cmd_ReloadSpineObject}"
+                                                        CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
+                                                <Button Style="{StaticResource ButtonDefault}"
+                                                        Margin="0 0 6 6"
+                                                        Content="{DynamicResource Str_MoveUpSpineObject}"
+                                                        Command="{Binding Cmd_MoveUpSpineObject}"
+                                                        CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
+                                                <Button Style="{StaticResource ButtonDefault}"
+                                                        Margin="0 0 6 6"
+                                                        Content="{DynamicResource Str_MoveDownSpineObject}"
+                                                        Command="{Binding Cmd_MoveDownSpineObject}"
+                                                        CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
+                                                <Button Style="{StaticResource ButtonDefault}"
+                                                        Margin="0 0 6 6"
+                                                        Content="{DynamicResource Str_RemoveSpineObject}"
+                                                        Command="{Binding Cmd_RemoveSpineObject}"
+                                                        CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
+                                            </WrapPanel>
+                                        </StackPanel>
                                         <StatusBar DockPanel.Dock="Bottom">
                                             <StatusBarItem>
                                                 <TextBlock>
@@ -698,9 +737,12 @@
                                 <TabItem.Header>
                                     <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
                                             MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
-                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_Canvas}" >
-                                            <Path Data="{StaticResource Geo_Sliders}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
-                                        </Viewbox>
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                            <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_Canvas}" >
+                                                <Path Data="{StaticResource Geo_Sliders}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                            </Viewbox>
+                                            <TextBlock Text="{DynamicResource Str_Canvas}" Margin="0 6 0 0" HorizontalAlignment="Center"/>
+                                        </StackPanel>
                                     </Border>
                                 </TabItem.Header>
                                 <TabItem.Resources>
@@ -879,9 +921,12 @@
                                 <TabItem.Header>
                                     <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
                                         MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
-                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_Explorer}">
-                                            <Path Data="{StaticResource Geo_Image}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
-                                        </Viewbox>
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                            <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_Explorer}">
+                                                <Path Data="{StaticResource Geo_Image}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                            </Viewbox>
+                                            <TextBlock Text="{DynamicResource Str_Explorer}" Margin="0 6 0 0" HorizontalAlignment="Center"/>
+                                        </StackPanel>
                                     </Border>
                                 </TabItem.Header>
                                 <Grid x:Name="_explorerGrid">
@@ -1027,23 +1072,30 @@
                                             Grid.Row="1" 
                                             Grid.IsSharedSizeScope="True"
                                             Background="{DynamicResource RegionBrush}">
-                                        <WrapPanel HorizontalAlignment="Center">
-                                            <WrapPanel.Resources>
-                                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonDefault}">
-                                                    <Setter Property="Margin" Value="5"/>
-                                                    <Setter Property="Width" Value="50"/>
-                                                </Style>
-                                            </WrapPanel.Resources>
-                                            <Button hc:IconElement.Geometry="{StaticResource Geo_Stop}" Command="{Binding Cmd_Stop}" ToolTip="{DynamicResource Str_StopTooltip}"/>
-                                            <Button hc:IconElement.Geometry="{StaticResource Geo_RotateLeft}" Command="{Binding Cmd_Restart}" ToolTip="{DynamicResource Str_RestartTooltip}"/>
-                                            <Button hc:IconElement.Geometry="{Binding Geo_PlayPause}" Command="{Binding Cmd_PlayPause}" ToolTip="{DynamicResource Str_PlayPauseTooltip}"/>
-                                            <Button hc:IconElement.Geometry="{StaticResource Geo_ForwardStep}" Command="{Binding Cmd_ForwardStep}" ToolTip="{DynamicResource Str_ForwardStepTooltip}"/>
-                                            <Button hc:IconElement.Geometry="{StaticResource Geo_ForwardFast}" Command="{Binding Cmd_ForwardFast}" ToolTip="{DynamicResource Str_ForwardFastTooltip}"/>
-                                            <Button x:Name="_fullScreenButton" 
-                                                    hc:IconElement.Geometry="{StaticResource Geo_ArrowsMaximize}" 
-                                                    Click="ButtonFullScreen_Click" 
-                                                    ToolTip="{DynamicResource Str_FullScreenTooltip}"/>
-                                        </WrapPanel>
+                                        <StackPanel>
+                                            <TextBlock Text="{DynamicResource Str_PlaybackControls}"
+                                                       HorizontalAlignment="Center"
+                                                       Margin="0 6"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                            <WrapPanel HorizontalAlignment="Center">
+                                                <WrapPanel.Resources>
+                                                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonDefault}">
+                                                        <Setter Property="Margin" Value="5"/>
+                                                        <Setter Property="Width" Value="50"/>
+                                                    </Style>
+                                                </WrapPanel.Resources>
+                                                <Button hc:IconElement.Geometry="{StaticResource Geo_Stop}" Command="{Binding Cmd_Stop}" ToolTip="{DynamicResource Str_StopTooltip}"/>
+                                                <Button hc:IconElement.Geometry="{StaticResource Geo_RotateLeft}" Command="{Binding Cmd_Restart}" ToolTip="{DynamicResource Str_RestartTooltip}"/>
+                                                <Button hc:IconElement.Geometry="{Binding Geo_PlayPause}" Command="{Binding Cmd_PlayPause}" ToolTip="{DynamicResource Str_PlayPauseTooltip}"/>
+                                                <Button hc:IconElement.Geometry="{StaticResource Geo_ForwardStep}" Command="{Binding Cmd_ForwardStep}" ToolTip="{DynamicResource Str_ForwardStepTooltip}"/>
+                                                <Button hc:IconElement.Geometry="{StaticResource Geo_ForwardFast}" Command="{Binding Cmd_ForwardFast}" ToolTip="{DynamicResource Str_ForwardFastTooltip}"/>
+                                                <Button x:Name="_fullScreenButton" 
+                                                        hc:IconElement.Geometry="{StaticResource Geo_ArrowsMaximize}" 
+                                                        Click="ButtonFullScreen_Click" 
+                                                        ToolTip="{DynamicResource Str_FullScreenTooltip}"/>
+                                            </WrapPanel>
+                                        </StackPanel>
                                     </Border>
                                 </Border>
                             </Grid>
