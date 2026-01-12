@@ -117,7 +117,7 @@
 
     <!-- 渲染画面参数面板 -->
     <s:String x:Key="Str_RenderStopped">Render Stopped</s:String>
-    <s:String x:Key="Str_PlaybackControls">Playback controls</s:String>
+    <s:String x:Key="Str_PlaybackControls">Playback Controls</s:String>
     <s:String x:Key="Str_ResolutionX">Width (px)</s:String>
     <s:String x:Key="Str_ResolutionY">Height (px)</s:String>
     <s:String x:Key="Str_CenterX">Center X</s:String>
