@@ -1,8 +1,9 @@
-﻿using NLog;
+using NLog;
 using SFML.System;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,12 +36,13 @@ namespace Spine.Exporters
                 }
 
                 var savePath = Path.Combine(output, $"frame_{_fps}_{frameIdx:d6}.png");
-                var info = new SKImageInfo(frame.Width, frame.Height, SKColorType.Rgba8888, SKAlphaType.Premul);
+                var pixels = UnpremultiplyPixels(frame.Image.Pixels);
+                var info = new SKImageInfo(frame.Width, frame.Height, SKColorType.Rgba8888, SKAlphaType.Unpremul);
 
                 _progressReporter?.Invoke(frameCount, frameIdx + 1, $"[{frameIdx + 1}/{frameCount}] {savePath}");
                 try
                 {
-                    using var skImage = SKImage.FromPixelCopy(info, frame.Image.Pixels);
+                    using var skImage = SKImage.FromPixelCopy(info, pixels);
                     using var data = skImage.Encode(SKEncodedImageFormat.Png, 100);
                     using var stream = File.OpenWrite(savePath);
                     data.SaveTo(stream);

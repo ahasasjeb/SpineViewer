@@ -170,6 +170,34 @@ namespace Spine.Exporters
             return new(_renderTexture.Texture.CopyToImage());
         }
 
+        protected static byte[] UnpremultiplyPixels(byte[] premultipliedPixels)
+        {
+            if (premultipliedPixels.Length == 0) return Array.Empty<byte>();
+            if (premultipliedPixels.Length % 4 != 0)
+                throw new ArgumentException("Invalid pixel buffer length.", nameof(premultipliedPixels));
+
+            var pixels = new byte[premultipliedPixels.Length];
+            for (int i = 0; i < premultipliedPixels.Length; i += 4)
+            {
+                var alpha = premultipliedPixels[i + 3];
+                pixels[i + 3] = alpha;
+                if (alpha == 0)
+                {
+                    pixels[i] = 0;
+                    pixels[i + 1] = 0;
+                    pixels[i + 2] = 0;
+                    continue;
+                }
+
+                var scale = 255f / alpha;
+                pixels[i] = (byte)Math.Min(255, MathF.Round(premultipliedPixels[i] * scale));
+                pixels[i + 1] = (byte)Math.Min(255, MathF.Round(premultipliedPixels[i + 1] * scale));
+                pixels[i + 2] = (byte)Math.Min(255, MathF.Round(premultipliedPixels[i + 2] * scale));
+            }
+
+            return pixels;
+        }
+
         /// <summary>
         /// 导出给定的模型, 从前往后对应从上往下的渲染顺序
         /// </summary>

@@ -43,21 +43,23 @@ namespace Spine.Exporters
         public override void Export(string output, params SpineObject[] spines)
         {
             using var frame = GetFrame(spines);
-            var info = new SKImageInfo(frame.Width, frame.Height, SKColorType.Rgba8888, SKAlphaType.Premul);
-            using var skImage = SKImage.FromPixelCopy(info, frame.Image.Pixels);
+            var pixels = UnpremultiplyPixels(frame.Image.Pixels);
+            var info = new SKImageInfo(frame.Width, frame.Height, SKColorType.Rgba8888, SKAlphaType.Unpremul);
+            using var skImage = SKImage.FromPixelCopy(info, pixels);
             using var data = skImage.Encode(_format, _quality);
             using var stream = File.OpenWrite(output);
             data.SaveTo(stream);
         }
 
         /// <summary>
-        /// 获取帧图像, 结果是预乘的
+        /// 获取帧图像, 结果是非预乘的
         /// </summary>
         public SKImage ExportMemoryImage(params SpineObject[] spines)
         {
             using var frame = GetFrame(spines);
-            var info = new SKImageInfo(frame.Width, frame.Height, SKColorType.Rgba8888, SKAlphaType.Premul);
-            return SKImage.FromPixelCopy(info, frame.Image.Pixels);
+            var pixels = UnpremultiplyPixels(frame.Image.Pixels);
+            var info = new SKImageInfo(frame.Width, frame.Height, SKColorType.Rgba8888, SKAlphaType.Unpremul);
+            return SKImage.FromPixelCopy(info, pixels);
         }
     }
 }
